@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#11162f" />
-    <meta name="description" content="JUEGO ACCESIBLE DE MECANOGRAFIA CON CINCO NIVELES, MUSICA Y UN ROBOT GUARDIAN." />
+    <meta name="description" content="JUEGO ACCESIBLE DE MECANOGRAFIA CON NUEVE NIVELES, TRANSCRIPCION Y UN BUSCADOR DE PRACTICA." />
     <title>TECLA POP</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2311162f'/%3E%3Crect x='11' y='16' width='42' height='32' rx='9' fill='%23f4e94b'/%3E%3Cpath d='M20 27h24M20 36h16' stroke='%2311162f' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
     <style>
@@ -20,6 +20,7 @@
         --rosa: #ff6da7;
         --violeta: #a98bff;
         --verde: #79ed9f;
+        --naranja: #ffae57;
         --fuente-teclado: Arial, "Helvetica Neue", Helvetica, sans-serif;
       }
 
@@ -127,12 +128,12 @@
 
       .niveles {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 14px;
       }
 
       .nivel {
-        min-height: 196px;
+        min-height: 164px;
         padding: 19px;
         border: 2px solid rgba(255,255,255,.12);
         border-radius: 24px;
@@ -183,6 +184,10 @@
       .nivel-3 { --color: var(--verde); }
       .nivel-4 { --color: var(--rosa); }
       .nivel-5 { --color: var(--violeta); }
+      .nivel-6 { --color: var(--naranja); }
+      .nivel-7 { --color: var(--cian); }
+      .nivel-8 { --color: var(--verde); }
+      .nivel-9 { --color: var(--amarillo); }
 
       .pie-inicio {
         display: flex;
@@ -327,6 +332,15 @@
         font-variant-numeric: tabular-nums;
         box-shadow: 0 11px 0 rgba(93,229,224,.34), 0 20px 45px rgba(0,0,0,.35);
         will-change: top;
+        white-space: pre-wrap;
+      }
+
+      .objetivo.multilinea {
+        min-width: min(82%, 390px);
+        padding-block: 15px;
+        font-size: clamp(1.25rem, 3.7vw, 2.15rem);
+        line-height: 1.38;
+        text-align: left;
       }
 
       .objetivo::before {
@@ -522,6 +536,14 @@
         letter-spacing: .08em;
         font-variant-numeric: tabular-nums;
         text-transform: uppercase;
+        resize: none;
+        overflow: hidden;
+      }
+
+      .entrada-teclado.multilinea {
+        min-height: 128px;
+        line-height: 1.45;
+        white-space: pre-wrap;
       }
 
       .entrada-teclado:focus {
@@ -588,6 +610,7 @@
       }
 
       .tecla.espacio { flex: 0 1 72%; }
+      .tecla.enter { flex: 0 1 52%; background: #6b3f18; border-color: rgba(255,174,87,.55); }
 
       .controles {
         display: grid;
@@ -764,6 +787,74 @@
         .acciones-finales { grid-template-columns: 1fr; }
       }
 
+
+      /* NIVELES 7 Y 8: LECTURA LEGIBLE Y SIN DESPLAZAMIENTO INTERNO */
+      .objetivo.parrafo {
+        width: calc(100% - 36px);
+        max-width: 94%; min-width: 0;
+        padding: 18px 22px;
+        text-align: left; line-height: 1.34;
+        letter-spacing: .018em;
+        overflow-wrap: anywhere;
+        font-size: 1.52rem;
+      }
+      .objetivo.parrafo.largo { font-size: 1.52rem; }
+      .transcripcion { display: flex; flex-direction: column; gap: 14px; flex: 1; }
+      .indicacion-transcripcion { display: flex; align-items:center; gap: 16px; flex-wrap: wrap; padding: 15px 20px; border-radius: 18px; background: var(--amarillo); color:#11162f; font-weight:900; }
+      .indicacion-transcripcion strong { font-size:1.28rem; white-space:nowrap; }
+      .indicacion-transcripcion span { font-size: .97rem; }
+      .transcripcion-columnas { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+      .hoja-transcripcion { display: flex; flex-direction: column; height: clamp(350px,55vh,480px); min-width:0; padding: 19px 22px 21px; border-radius: 24px; border:4px solid #c9ddf7; background:#fff; color:#141b35; box-shadow:0 12px 32px rgba(0,0,0,.2); }
+      .titulo-hoja { display:block; flex:0 0 auto; font-family:Arial,sans-serif; font-size:1.02rem; font-weight:900; letter-spacing:.08em; color:#344469; margin-bottom:14px; }
+      .texto-referencia { min-height:0; flex:1; font-family:Arial,Helvetica,sans-serif; font-weight:750; font-size:32px; line-height:1.32; letter-spacing:.015em; white-space:pre-wrap; overflow-wrap:break-word; overflow:hidden; }
+      .hoja-escritura { border-color:var(--cian); }
+      .texto-transcripcion { flex:1; width:100%; min-height:0; padding:0; border:0; resize:none; outline:none; font-family:Arial,Helvetica,sans-serif; font-weight:750; font-size:32px; line-height:1.32; letter-spacing:.015em; color:#171d31; background:transparent; overflow:hidden; text-transform:uppercase; }
+      .texto-transcripcion:focus-visible { box-shadow:inset 0 0 0 3px rgba(93,229,224,.3); border-radius:8px; }
+      .controles-transcripcion { align-self:stretch; grid-template-columns:repeat(2,minmax(0,1fr)); }
+      /* NIVEL 9: BUSCADOR SIMULADO E INDEPENDIENTE DE RED */
+      .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+      .buscador { flex:1; display:flex; flex-direction:column; gap:28px; }
+      .buscador-barra-superior { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+      .etiqueta-modo { font-weight:900; letter-spacing:.07em; color:var(--cian); }
+      .buscador-salir,.boton-volver { padding:12px 16px; background:#222a51; color:#fff; border:2px solid rgba(255,255,255,.17); border-radius:13px; cursor:pointer; font-weight:900; }
+      .buscador-salir:focus-visible,.boton-volver:focus-visible { outline:3px solid var(--cian); outline-offset:2px; }
+      .buscador-columnas { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(255px,.74fr); align-items:start; gap:22px; }
+      .buscador-principal { min-width:0; padding:clamp(24px,4vw,46px); border:2px solid rgba(255,255,255,.14); border-radius:29px; background:linear-gradient(150deg,#171e3e,#0d132c); box-shadow:0 15px 48px rgba(0,0,0,.18); text-align:center; }
+      .buscador-marca { margin:8px 0 16px; font-family:Arial,Helvetica,sans-serif; font-weight:900; letter-spacing:-.075em; font-size:clamp(3.1rem,7vw,5.75rem); line-height:1.1; white-space:nowrap; }
+      .buscador-marca span:nth-child(4n+1) { color:#66a7ff; }
+      .buscador-marca span:nth-child(4n+2) { color:#fa697a; }
+      .buscador-marca span:nth-child(4n+3) { color:#f4d35f; }
+      .buscador-marca span:nth-child(4n+4) { color:#67d9a9; }
+      .buscador-subtitulo { color:var(--suave); font-weight:900; font-size:1rem; margin:0 0 26px; letter-spacing:.02em; }
+      .buscador-formulario { display:flex; align-items:center; border:3px solid var(--cian); border-radius:19px; background:#fff; box-shadow:0 0 0 5px rgba(93,229,224,.12); overflow:hidden; }
+      .buscador-formulario:focus-within { box-shadow:0 0 0 6px rgba(244,233,75,.2); border-color:var(--amarillo); }
+      #campoBusqueda { flex:1; width:0; min-width:0; padding:19px 17px; border:0; outline:none; background:#fff; color:#10162e; font:800 clamp(1.2rem,2.5vw,1.65rem) Arial,sans-serif; text-transform:uppercase; }
+      #campoBusqueda::placeholder { color:#6a7394; font-weight:600; }
+      #botonBuscar { display:flex; gap:9px; align-items:center; justify-content:center; min-height:68px; padding:12px 18px; border:0; background:var(--amarillo); color:#121734; font-size:1rem; font-weight:1000; cursor:pointer; }
+      #botonBuscar:hover,#botonBuscar:focus-visible { background:#d6e99a; outline:3px solid var(--cian); outline-offset:-4px; }
+      .buscador-ayuda { margin:20px 0 6px; min-height:45px; padding:12px; border-radius:14px; background:rgba(93,229,224,.09); color:var(--cian); font-size:.96rem; font-weight:900; }
+      .resultado-busqueda { margin-top:20px; text-align:left; }
+      .boton-volver { margin-bottom:12px; }
+      .resultado-tarjeta { display:grid; grid-template-columns:minmax(160px, .85fr) 1fr; gap:18px; align-items:center; border-radius:22px; padding:18px; background:#fff; color:#121733; }
+      .resultado-imagen { display:grid; place-items:center; overflow:hidden; min-height:225px; border-radius:18px; border:2px solid #cfd9ec; background:linear-gradient(145deg,#d0f2ff,#ffe8bc); }
+      .resultado-imagen svg { max-width:100%; width:100%; height:100%; max-height:250px; }
+      .resultado-emoji { font-size:clamp(5rem, 12vw, 8rem); line-height:1.1; }
+      .resultado-etiqueta { display:block; color:#3d6c92; font-size:.8rem; font-weight:900; letter-spacing:.07em; }
+      .resultado-informacion h2 { margin:12px 0; font-size:clamp(1.75rem,3vw,2.7rem); line-height:1.1; }
+      .resultado-informacion p { font:750 clamp(1rem,1.8vw,1.25rem)/1.45 Arial,sans-serif; }
+      .buscador-progreso { margin:24px 0 8px; color:var(--amarillo); font-weight:900; }
+      .buscador-advertencia { margin:18px 0 0; font-size:.79rem; line-height:1.5; color:#a9b3db; }
+      .buscador-ejemplos { padding:24px; border:2px solid rgba(244,233,75,.27); border-radius:24px; background:#192143; }
+      .ejemplos-icono { display:block; font-size:2rem; color:var(--amarillo); }
+      .buscador-ejemplos h2 { font-size:1.38rem; line-height:1.1; margin:10px 0 7px; }
+      .buscador-ejemplos p { color:var(--suave); line-height:1.45; font-weight:800; }
+      .palabras-ejemplo { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:22px; }
+      .palabras-ejemplo button { border:2px solid rgba(93,229,224,.35); min-height:47px; padding:9px 6px; border-radius:12px; background:#293359; color:#fff; font-weight:900; cursor:pointer; font-size:.96rem; }
+      .palabras-ejemplo button:hover,.palabras-ejemplo button:focus-visible { border-color:var(--amarillo); color:var(--amarillo); outline:none; }
+      .ejemplos-pasos { display:flex; flex-direction:column; gap:9px; margin-top:26px; padding:16px; border-radius:16px; background:#0d142d; font-size:.88rem; font-weight:850; color:#cad8fa; }
+      .ejemplos-pasos strong { color:var(--amarillo); }
+      @media(max-width:850px) { .buscador-columnas{grid-template-columns:1fr;} .buscador-ejemplos{order:2;} .palabras-ejemplo{grid-template-columns:repeat(3,minmax(0,1fr));} .transcripcion-columnas{grid-template-columns:1fr;} .hoja-transcripcion{height:310px;} }
+      @media(max-width:500px) { .buscador{gap:13px;} .buscador-principal{padding:18px 14px;} .buscador-marca{font-size:clamp(2.9rem,12vw,4rem);} .buscador-formulario #campoBusqueda{padding:15px 9px;font-size:1.08rem;} #botonBuscar{padding:10px;min-height:57px;} #botonBuscar span{display:none;} .resultado-tarjeta{grid-template-columns:1fr;} .resultado-imagen{min-height:175px;} .palabras-ejemplo{grid-template-columns:repeat(2,1fr);} .hoja-transcripcion{height:300px;padding:14px;} .indicacion-transcripcion{padding:12px;} .texto-referencia,.texto-transcripcion{font-size:22px;} .objetivo.parrafo{padding:12px; font-size:1.15rem;} }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
           scroll-behavior: auto !important;
@@ -819,6 +910,26 @@
             <strong>RETO MIXTO</strong>
             <span>LETRAS Y NUMEROS</span>
           </button>
+          <button class="nivel nivel-6" type="button" data-nivel="6">
+            <span class="nivel-numero">6</span>
+            <strong>BAJAR CON ENTER</strong>
+            <span>UNA PALABRA POR LINEA</span>
+          </button>
+          <button class="nivel nivel-7" type="button" data-nivel="7">
+            <span class="nivel-numero">7</span>
+            <strong>PARRAFOS</strong>
+            <span>TEXTOS CORTOS QUE DESCIENDEN</span>
+          </button>
+          <button class="nivel nivel-8" type="button" data-nivel="8">
+            <span class="nivel-numero">8</span>
+            <strong>TRANSCRIPCION</strong>
+            <span>LEE A LA IZQUIERDA Y ESCRIBE A LA DERECHA</span>
+          </button>
+          <button class="nivel nivel-9" type="button" data-nivel="9">
+            <span class="nivel-numero">9</span>
+            <strong>BUSCAPOP</strong>
+            <span>APRENDE A BUSCAR EN INTERNET</span>
+          </button>
         </div>
 
         <div class="pie-inicio"><span class="pulso"></span> TODO ESTA LISTO</div>
@@ -867,7 +978,7 @@
 
             <div class="entrada-wrap">
               <label for="entradaTeclado">TOCA AQUI Y ESCRIBE</label>
-              <input class="entrada-teclado" id="entradaTeclado" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="mensaje" />
+              <textarea class="entrada-teclado" id="entradaTeclado" rows="1" wrap="off" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="mensaje"></textarea>
             </div>
 
             <div class="mensaje" id="mensaje" role="status" aria-live="polite">ESCRIBE LA PRIMERA TECLA</div>
@@ -878,6 +989,71 @@
               <button class="boton-control" id="botonPausa" type="button">PAUSAR</button>
               <button class="boton-control" id="botonSalir" type="button">NIVELES</button>
             </div>
+          </aside>
+        </div>
+        <section class="transcripcion" id="transcripcion" aria-label="TRANSCRIPCION DE UN TEXTO" hidden>
+          <div class="indicacion-transcripcion">
+            <strong id="referenciaTitulo">TEXTO 1</strong>
+            <span>LEE EL TEXTO Y COPIALO A LA DERECHA. TIEMPO SUGERIDO: 5 MINUTOS.</span>
+          </div>
+          <div class="transcripcion-columnas">
+            <section class="hoja-transcripcion" aria-label="TEXTO PARA TRANSCRIBIR">
+              <div class="titulo-hoja">LEE AQUI</div>
+              <div class="texto-referencia" id="textoReferencia"></div>
+            </section>
+            <section class="hoja-transcripcion hoja-escritura" aria-label="ESPACIO PARA ESCRIBIR">
+              <label class="titulo-hoja" for="entradaTranscripcion">ESCRIBE AQUI</label>
+              <textarea id="entradaTranscripcion" class="texto-transcripcion" spellcheck="false" autocapitalize="characters" autocomplete="off" aria-describedby="mensajeTranscripcion"></textarea>
+            </section>
+          </div>
+          <div id="mensajeTranscripcion" class="mensaje" role="status" aria-live="polite">ESCRIBE EL TEXTO TAL COMO APARECE.</div>
+          <div class="controles controles-transcripcion">
+            <button class="boton-control" id="botonEscucharTranscripcion" type="button">ESCUCHAR</button>
+            <button class="boton-control" id="botonSalirTranscripcion" type="button">NIVELES</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="buscador" id="buscador" aria-labelledby="tituloBuscador" hidden>
+        <div class="buscador-barra-superior">
+          <span class="etiqueta-modo">NIVEL 9 · PRACTICA DE BUSQUEDA</span>
+          <button id="salirBuscador" type="button" class="buscador-salir">← ELEGIR NIVELES</button>
+        </div>
+        <div class="buscador-columnas">
+          <div class="buscador-principal">
+            <div class="buscador-marca" id="tituloBuscador" aria-label="BUSCAPOP, BUSCADOR DE PRACTICA">
+              <span>B</span><span>u</span><span>s</span><span>c</span><span>a</span><span>P</span><span>o</span><span>p</span>
+            </div>
+            <p class="buscador-subtitulo">ESCRIBE LO QUE QUIERES ENCONTRAR</p>
+            <form id="formBusqueda" class="buscador-formulario" autocomplete="off">
+              <label class="sr-only" for="campoBusqueda">PALABRA PARA BUSCAR</label>
+              <input id="campoBusqueda" type="search" enterkeyhint="search" placeholder="POR EJEMPLO: GATO" maxlength="80" autocapitalize="characters" spellcheck="false" required />
+              <button type="submit" id="botonBuscar" title="BUSCAR" aria-label="BUSCAR CON LA LUPA">
+                <svg aria-hidden="true" viewBox="0 0 24 24" width="31" height="31"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M15.5 15.5L21 21" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                <span>BUSCAR</span>
+              </button>
+            </form>
+            <div class="buscador-ayuda" id="ayudaBusqueda" role="status" aria-live="polite">ESCRIBE UNA PALABRA Y PULSA ENTER O LA LUPA.</div>
+            <div class="resultado-busqueda" id="resultadoBusqueda" hidden>
+              <button id="volverBusqueda" type="button" class="boton-volver">← VOLVER A BUSCAR</button>
+              <div class="resultado-tarjeta">
+                <div class="resultado-imagen" id="imagenResultado" role="img" aria-label="IMAGEN DEL RESULTADO"></div>
+                <div class="resultado-informacion">
+                  <span class="resultado-etiqueta">RESULTADO DE BUSQUEDA</span>
+                  <h2 id="tituloResultado"></h2>
+                  <p id="descripcionResultado"></p>
+                </div>
+              </div>
+            </div>
+            <p class="buscador-progreso" id="progresoBusquedas">BUSQUEDAS REALIZADAS: 0</p>
+            <p class="buscador-advertencia">ESTA ES UNA PRACTICA SIN INTERNET. NO ES GOOGLE NI REALIZA BUSQUEDAS REALES.</p>
+          </div>
+          <aside class="buscador-ejemplos" aria-labelledby="tituloEjemplos">
+            <span class="ejemplos-icono" aria-hidden="true">✦</span>
+            <h2 id="tituloEjemplos">¿QUE PUEDO BUSCAR?</h2>
+            <p>PRUEBA ESCRIBIR ESTAS PALABRAS:</p>
+            <div class="palabras-ejemplo" id="palabrasEjemplo"></div>
+            <div class="ejemplos-pasos"><strong>RECUERDA:</strong><span>1. ESCRIBE</span><span>2. PULSA ENTER O LA LUPA</span><span>3. MIRA EL RESULTADO</span><span>4. VUELVE A BUSCAR</span></div>
           </aside>
         </div>
       </section>
@@ -988,6 +1164,63 @@
               "GRUPO 10", "PUERTA 9", "PISO 305", "AULA 12C", "MESA 24", "FILA 3", "EQUIPO 8", "PC 204",
               "AULA 3B", "RUTA 7A", "CLAVE 42", "TECLA F5", "BLOQUE 10", "CALLE 80", "CASA 21A"
             ]
+          },
+          6: {
+            nombre: "BAJAR CON ENTER",
+            ayuda: "ESCRIBE LA PALABRA Y PULSA ENTER",
+            velocidad: 0.00215,
+            teclado: "enter",
+            cantidad: 24,
+            banco: [
+              "SOL\nLUNA\nCASA\n", "PAN\nMESA\nFLOR\n", "MAR\nNUBE\nGATO\n",
+              "LUZ\nROCA\nPATO\n", "RED\nVASO\nTAZA\n", "MANO\nPERRO\nLIBRO\n",
+              "AGUA\nCIELO\nPAPEL\n", "SILLA\nPUERTA\nCAMISA\n", "PARQUE\nCAMINO\nESCUELA\n",
+              "TECLA\nJUEGO\nAMIGO\n", "ROBOT\nCLASE\nEQUIPO\n", "VERDE\nPELOTA\nVENTANA\n",
+              "NIÑO\nBAÑO\nPIÑA\n", "RISA\nRITMO\nSEÑAL\n", "CAMPO\nBARCO\nFUEGO\n",
+              "AULA\nPISO\nGRUPO\n", "UNO\nDOS\nTRES\n", "ARRIBA\nCENTRO\nABAJO\n",
+              "IZQUIERDA\nDERECHA\nENTER\n", "MI CASA\nEL SOL\nLA LUNA\n", "YO PUEDO\nMUY BIEN\nTODO LISTO\n",
+              "PASO UNO\nPASO DOS\nPASO TRES\n", "MANO FIRME\nMIRA ABAJO\nPULSA ENTER\n",
+              "MI TECLADO\nNUEVA LINEA\nSIGUE ASI\n", "ROBOT AMIGO\nBUEN TRABAJO\nLO LOGRASTE\n",
+              "PRIMERA FILA\nSEGUNDA FILA\nTERCERA FILA\n", "ESCRIBE AQUI\nBAJA AHORA\nCONTINUA YA\n",
+              "PALABRA UNO\nPALABRA DOS\nPALABRA TRES\n", "UN RENGLON\nOTRO RENGLON\nULTIMO RENGLON\n",
+              "HOY APRENDO\nPULSO ENTER\nBAJO UNA LINEA\n"
+            ]
+          },
+          7: {
+            nombre: "PARRAFOS",
+            ayuda: "LEE Y ESCRIBE EL PARRAFO. USA ESPACIOS.",
+            velocidad: 0.0011,
+            teclado: "parrafos",
+            cantidad: 12,
+            banco: [
+              "HOY VOY AL COLEGIO Y SALUDO A MIS AMIGOS. ME GUSTA APRENDER COSAS NUEVAS.",
+              "EN MI CASA HAY UNA MESA Y UNA SILLA. ME SIENTO PARA LEER UN LIBRO.",
+              "EL GATO DUERME EN SU CAMA. DESPUES SE LEVANTA PARA TOMAR AGUA.",
+              "EN EL PARQUE HAY ARBOLES Y FLORES. CAMINO DESPACIO Y MIRO EL CIELO.",
+              "MI PROFESOR EXPLICA LA TAREA. YO ESCUCHO Y SIGO CADA PASO.",
+              "LA COMPUTADORA TIENE UN TECLADO. CON EL PUEDO ESCRIBIR Y APRENDER.",
+              "EN LA MAÑANA SALE EL SOL. ABRO LA VENTANA Y COMIENZO MI DIA.",
+              "MI AMIGA TIENE UNA PELOTA AZUL. JUGAMOS JUNTOS EN EL PATIO.",
+              "ME GUSTA ESCUCHAR MUSICA. CANTO Y LLEVO EL RITMO CON LAS MANOS.",
+              "EL PERRO CORRE POR EL JARDIN. DESPUES DESCANSA JUNTO A LA PUERTA.",
+              "ABRO UN LIBRO CON CUIDADO. LEO UNA PAGINA Y APRENDO UNA PALABRA.",
+              "BUSCO UNA IMAGEN DE UN GATO. ESCRIBO GATO Y PULSO ENTER."
+            ]
+          },
+          8: {
+            nombre: "TRANSCRIPCION",
+            ayuda: "LEE A LA IZQUIERDA Y COPIA EL TEXTO A LA DERECHA.",
+            velocidad: 0,
+            teclado: "transcripcion",
+            cantidad: 6,
+            banco: [
+              "EN LA SALA DE INFORMATICA APRENDEMOS A USAR EL TECLADO. CADA LETRA TIENE SU LUGAR. SI ESCRIBO CON CALMA PUEDO MEJORAR CADA DIA.",
+              "CUANDO QUIERO APRENDER SOBRE UN ANIMAL PUEDO USAR UN BUSCADOR. ESCRIBO SU NOMBRE EN LA BARRA Y PULSO ENTER PARA VER LOS RESULTADOS.",
+              "MI ESCUELA ES UN LUGAR PARA APRENDER Y COMPARTIR. CADA PERSONA AVANZA A SU RITMO Y PUEDE PRACTICAR CON AYUDA DE SUS PROFESORES.",
+              "EN MI TIEMPO LIBRE ME GUSTA LEER Y ESCUCHAR MUSICA. TAMBIEN PUEDO DIBUJAR O JUGAR CON MIS AMIGOS EN EL PARQUE.",
+              "UN DIA VI UN GATO JUNTO A UNA VENTANA. TENIA OJOS GRANDES Y UNA COLA LARGA. BUSQUE INFORMACION PARA CONOCER MAS SOBRE LOS GATOS.",
+              "PARA HACER UNA BUSQUEDA PRIMERO PIENSO QUE QUIERO SABER. LUEGO ESCRIBO UNA PALABRA EN EL BUSCADOR Y OBSERVO EL RESULTADO."
+            ]
           }
         };
 
@@ -1002,7 +1235,15 @@
           entrada: $("#entradaTeclado"), mensaje: $("#mensaje"), teclado: $("#teclado"),
           botonSonido: $("#botonSonido"), botonPantalla: $("#botonPantalla"), botonEscuchar: $("#botonEscuchar"),
           botonPausa: $("#botonPausa"), botonSalir: $("#botonSalir"), botonRepetir: $("#botonRepetir"),
-          botonOtroNivel: $("#botonOtroNivel"), puntosFinales: $("#puntosFinales"), mejorMarca: $("#mejorMarca")
+          botonOtroNivel: $("#botonOtroNivel"), puntosFinales: $("#puntosFinales"), mejorMarca: $("#mejorMarca"),
+          tablero: $(".tablero"), transcripcion: $("#transcripcion"), referencia: $("#textoReferencia"),
+          referenciaTitulo: $("#referenciaTitulo"), entradaTranscripcion: $("#entradaTranscripcion"),
+          mensajeTranscripcion: $("#mensajeTranscripcion"), botonSalirTranscripcion: $("#botonSalirTranscripcion"),
+          botonEscucharTranscripcion: $("#botonEscucharTranscripcion"), buscador: $("#buscador"),
+          campoBusqueda: $("#campoBusqueda"), formularioBusqueda: $("#formBusqueda"),
+          ayudaBusqueda: $("#ayudaBusqueda"), resultadoBusqueda: $("#resultadoBusqueda"),
+          imagenResultado: $("#imagenResultado"), tituloResultado: $("#tituloResultado"),
+          descripcionResultado: $("#descripcionResultado"), progresoBusquedas: $("#progresoBusquedas")
         };
 
         let nivelActual = 1;
@@ -1022,6 +1263,7 @@
         let temporizadorGuardian = 0;
         let sonidoActivo = true;
         let audio = null;
+        let temporizadorTecla = 0;
         const pocoMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         function normalizar(texto) {
@@ -1125,6 +1367,8 @@
         function mostrarMensaje(texto, tipo = "") {
           elementos.mensaje.textContent = texto;
           elementos.mensaje.className = "mensaje" + (tipo ? " " + tipo : "");
+          elementos.mensajeTranscripcion.textContent = texto;
+          elementos.mensajeTranscripcion.className = "mensaje" + (tipo ? " " + tipo : "");
         }
 
         function siguienteCaracter() {
@@ -1132,20 +1376,25 @@
         }
 
         function etiquetaTecla(caracter) {
-          return caracter === " " ? "ESPACIO" : caracter;
+          if (caracter === " ") return "ESPACIO";
+          if (caracter === "\n") return "ENTER ↵";
+          return caracter;
         }
 
         function actualizarPalabra() {
           elementos.correcta.textContent = escrito;
           elementos.pendiente.textContent = retoActual.slice(escrito.length);
           elementos.objetivo.classList.toggle("largo", retoActual.length > 10);
+          elementos.objetivo.classList.toggle("multilinea", nivelActual === 6);
+          elementos.objetivo.classList.toggle("parrafo", nivelActual === 7);
+          if (nivelActual === 7) ajustarFuenteParrafo();
           elementos.entrada.value = escrito;
           const proxima = siguienteCaracter();
           elementos.teclaSiguiente.textContent = etiquetaTecla(proxima);
-          elementos.ayuda.textContent = proxima === " " ? "USA LA BARRA LARGA" : "BUSCA " + proxima;
-          document.querySelectorAll(".tecla").forEach((tecla) => {
-            tecla.classList.toggle("activa", tecla.dataset.tecla === proxima);
-          });
+          if (proxima === " ") elementos.ayuda.textContent = "USA LA BARRA LARGA";
+          else if (proxima === "\n") elementos.ayuda.textContent = "PULSA ENTER PARA BAJAR";
+          else elementos.ayuda.textContent = "BUSCA " + proxima;
+          // La tecla se ilumina solo cuando el estudiante la pulsa, nunca antes.
           elementos.objetivo.setAttribute("aria-label", "RETO " + retoActual + ". ESCRITO " + (escrito || "NADA"));
         }
 
@@ -1160,7 +1409,8 @@
         function crearTecla(caracter, esEspacio = false) {
           const boton = document.createElement("button");
           boton.type = "button";
-          boton.className = "tecla" + (esEspacio ? " espacio" : "");
+          const esEnter = caracter === "\n";
+          boton.className = "tecla" + (esEspacio ? " espacio" : "") + (esEnter ? " enter" : "");
           boton.dataset.tecla = caracter;
           boton.textContent = etiquetaTecla(caracter);
           boton.setAttribute("aria-label", "TECLA " + etiquetaTecla(caracter));
@@ -1179,6 +1429,7 @@
           if (tipo === "frases") filas = FILAS.letras;
           if (tipo === "numeros") filas = FILAS.numeros;
           if (tipo === "mixto") filas = [...FILAS.numeros, ...FILAS.letras];
+          if (tipo === "enter" || tipo === "parrafos") filas = FILAS.letras;
 
           filas.forEach((caracteres) => {
             const fila = document.createElement("div");
@@ -1187,11 +1438,24 @@
             elementos.teclado.appendChild(fila);
           });
 
-          if (tipo === "frases" || tipo === "mixto") {
+          if (tipo === "frases" || tipo === "mixto" || tipo === "parrafos") {
             const filaEspacio = document.createElement("div");
             filaEspacio.className = "fila-teclas";
             filaEspacio.appendChild(crearTecla(" ", true));
             elementos.teclado.appendChild(filaEspacio);
+          }
+
+          if (tipo === "parrafos") {
+            const filaPunto = document.createElement("div");
+            filaPunto.className = "fila-teclas";
+            filaPunto.appendChild(crearTecla("."));
+            elementos.teclado.appendChild(filaPunto);
+          }
+          if (tipo === "enter") {
+            const filaEnter = document.createElement("div");
+            filaEnter.className = "fila-teclas";
+            filaEnter.appendChild(crearTecla("\n"));
+            elementos.teclado.appendChild(filaEnter);
           }
         }
 
@@ -1208,10 +1472,19 @@
           actualizarPalabra();
           mostrarMensaje(NIVELES[nivelActual].ayuda);
           elementos.entrada.value = "";
-          elementos.entrada.focus({ preventScroll: true });
+          if (nivelActual === 8) {
+            elementos.referencia.textContent = retoActual;
+            elementos.referenciaTitulo.textContent = "TEXTO " + (completados + 1) + " DE " + totalRetos();
+            elementos.entradaTranscripcion.value = "";
+            elementos.entradaTranscripcion.focus({ preventScroll: true });
+            requestAnimationFrame(ajustarFuentesTranscripcion);
+          } else {
+            elementos.entrada.focus({ preventScroll: true });
+          }
         }
 
         function iniciarNivel(numeroNivel) {
+          if (Number(numeroNivel) === 9) { iniciarBuscador(); return; }
           cancelAnimationFrame(cuadroAnimacion);
           clearTimeout(temporizador);
           window.speechSynthesis?.cancel();
@@ -1223,12 +1496,17 @@
           bloqueado = false;
           estado = "JUGANDO";
           elementos.inicio.hidden = true;
+          elementos.buscador.hidden = true;
           elementos.juego.hidden = false;
+          elementos.tablero.hidden = nivelActual === 8;
+          elementos.transcripcion.hidden = nivelActual !== 8;
           elementos.final.hidden = true;
           elementos.capaPausa.hidden = true;
           elementos.botonPausa.textContent = "PAUSAR";
           elementos.nombreNivel.textContent = NIVELES[nivelActual].nombre;
           elementos.entrada.inputMode = nivelActual === 4 ? "numeric" : "text";
+          elementos.entrada.rows = nivelActual === 6 ? 4 : 1;
+          elementos.entrada.classList.toggle("multilinea", nivelActual === 6);
           renderizarTeclado(NIVELES[nivelActual].teclado);
           iniciarAudio();
           iniciarMusicaNivel(true);
@@ -1245,6 +1523,7 @@
           estado = "INICIO";
           pausa = false;
           elementos.inicio.hidden = false;
+          elementos.buscador.hidden = true;
           elementos.juego.hidden = true;
           elementos.final.hidden = true;
           document.querySelector(".nivel")?.focus();
@@ -1254,7 +1533,7 @@
           if (estado !== "JUGANDO") return;
           const delta = Math.min(tiempo - ultimoTiempo, 80);
           ultimoTiempo = tiempo;
-          if (!pausa && !bloqueado && !pocoMovimiento) {
+          if (!pausa && !bloqueado && !pocoMovimiento && nivelActual !== 8) {
             const aumento = 1 + Math.min(0.45, (completados / totalRetos()) * 0.45);
             posicion += delta * NIVELES[nivelActual].velocidad * aumento;
             const limite = Math.max(47, Math.min(58,
@@ -1276,12 +1555,17 @@
           const entrada = normalizar(caracter);
           if (!entrada || entrada.length !== 1) return;
           const esperado = siguienteCaracter();
+          destacarTecla(entrada);
           if (entrada === esperado) {
             escrito += esperado;
             sonidoBien();
             mostrarMensaje("MUY BIEN. SIGUE ASI", "bien");
             actualizarPalabra();
-            lanzarPulso(escrito === retoActual);
+            if (nivelActual !== 8) lanzarPulso(escrito === retoActual);
+            if (nivelActual === 8) {
+              elementos.entradaTranscripcion.value = escrito;
+              ajustarFuentesTranscripcion();
+            }
             if (escrito === retoActual) completarReto();
           } else {
             erroresReto += 1;
@@ -1294,10 +1578,42 @@
         }
 
         function borrarCaracter() {
-          if (estado !== "JUGANDO" || pausa || bloqueado || !escrito) return;
-          escrito = escrito.slice(0, -1);
-          actualizarPalabra();
-          mostrarMensaje("PUEDES CONTINUAR");
+          // SIN BORRAR: los errores no se registran y deben intentarlo de nuevo.
+          mostrarMensaje("NO HACE FALTA BORRAR. ESCRIBE LA SIGUIENTE LETRA.");
+        }
+
+        function destacarTecla(caracter) {
+          document.querySelectorAll(".tecla").forEach(tecla => {
+            tecla.classList.toggle("activa", tecla.dataset.tecla === caracter);
+          });
+          clearTimeout(temporizadorTecla);
+          temporizadorTecla = setTimeout(() => {
+            document.querySelectorAll(".tecla.activa").forEach(tecla => tecla.classList.remove("activa"));
+          }, 170);
+        }
+
+        function ajustarFuenteParrafo() {
+          if (nivelActual !== 7 || !retoActual || elementos.juego.hidden) return;
+          const objetivo = elementos.objetivo;
+          const limite = Math.min(210, elementos.zona.clientHeight * .37);
+          let tamaño = 28;
+          objetivo.style.fontSize = tamaño + "px";
+          while (objetivo.offsetHeight > limite && tamaño > 17) {
+            tamaño -= 1;
+            objetivo.style.fontSize = tamaño + "px";
+          }
+        }
+
+        function ajustarFuentesTranscripcion() {
+          if (nivelActual !== 8 || elementos.transcripcion.hidden) return;
+          const referencia = elementos.referencia;
+          let tamaño = 38;
+          referencia.style.fontSize = tamaño + "px";
+          while (referencia.scrollHeight > referencia.clientHeight + 1 && tamaño > 19) {
+            tamaño -= 1;
+            referencia.style.fontSize = tamaño + "px";
+          }
+          elementos.entradaTranscripcion.style.fontSize = tamaño + "px";
         }
 
         function animarGuardian(clase, duracion = 320) {
@@ -1352,7 +1668,7 @@
           elementos.objetivo.classList.add("acierto");
           mostrarMensaje("RETO COMPLETADO", "bien");
           sonidoMeta();
-          lanzarParticulas();
+          if (nivelActual !== 8) lanzarParticulas();
           temporizador = setTimeout(() => {
             completados += 1;
             if (completados >= totalRetos()) mostrarFinal();
@@ -1393,7 +1709,7 @@
           else if (sonidoActivo) iniciarMusicaNivel(false);
           if (!pausa) {
             ultimoTiempo = performance.now();
-            elementos.entrada.focus({ preventScroll: true });
+            (nivelActual === 8 ? elementos.entradaTranscripcion : elementos.entrada).focus({ preventScroll: true });
           }
         }
 
@@ -1403,8 +1719,12 @@
             return;
           }
           window.speechSynthesis.cancel();
-          const deletrear = nivelActual >= 4;
-          const texto = deletrear ? retoActual.split("").map((c) => c === " " ? "ESPACIO" : c).join(" ") : retoActual;
+          const deletrear = nivelActual === 4 || nivelActual === 5 || nivelActual === 6;
+          const texto = deletrear ? retoActual.split("").map((c) => {
+            if (c === " ") return "ESPACIO";
+            if (c === "\n") return "ENTER";
+            return c;
+          }).join(" ") : retoActual;
           const voz = new SpeechSynthesisUtterance(texto);
           voz.lang = "es-CO";
           voz.rate = .72;
@@ -1441,7 +1761,7 @@
         }
 
         function enfocarEntrada() {
-          if (estado === "JUGANDO" && !pausa) elementos.entrada.focus({ preventScroll: true });
+          if (estado === "JUGANDO" && !pausa) (nivelActual === 8 ? elementos.entradaTranscripcion : elementos.entrada).focus({ preventScroll: true });
         }
 
         function registrarHerramientasDelJuego() {
@@ -1451,11 +1771,11 @@
             void Promise.resolve(contexto.registerTool({
               name: "iniciar_nivel_tecla_pop",
               title: "INICIAR NIVEL",
-              description: "INICIA UNO DE LOS CINCO NIVELES Y ACTUALIZA EL JUEGO VISIBLE.",
+              description: "INICIA UNO DE LOS NUEVE NIVELES Y ACTUALIZA EL JUEGO VISIBLE.",
               inputSchema: {
                 type: "object",
                 properties: {
-                  nivel: { type: "integer", minimum: 1, maximum: 5 }
+                  nivel: { type: "integer", minimum: 1, maximum: 9 }
                 },
                 required: ["nivel"],
                 additionalProperties: false
@@ -1463,9 +1783,9 @@
               annotations: { readOnlyHint: false, untrustedContentHint: false },
               execute(entrada) {
                 const numero = Number(entrada?.nivel);
-                if (!Number.isInteger(numero) || !NIVELES[numero]) throw new Error("EL NIVEL DEBE ESTAR ENTRE 1 Y 5.");
+                if (!Number.isInteger(numero) || numero < 1 || numero > 9) throw new Error("EL NIVEL DEBE ESTAR ENTRE 1 Y 9.");
                 iniciarNivel(numero);
-                return { nivel: numero, nombre: NIVELES[numero].nombre, estado: "INICIADO", retos: totalRetos() };
+                return { nivel: numero, nombre: numero === 9 ? "BUSCAPOP" : NIVELES[numero].nombre, estado: "INICIADO", retos: numero === 9 ? "LIBRE" : totalRetos() };
               }
             })).catch(() => {});
           } catch (_) {}
@@ -1475,23 +1795,41 @@
           boton.addEventListener("click", () => iniciarNivel(boton.dataset.nivel));
         });
 
-        elementos.entrada.addEventListener("input", () => {
-          const candidato = normalizar(elementos.entrada.value);
-          if (candidato.length < escrito.length && retoActual.startsWith(candidato)) {
-            escrito = candidato;
-            actualizarPalabra();
+        function recibirTexto(campo) {
+          if (estado !== "JUGANDO" || pausa || bloqueado) { campo.value = escrito; return; }
+          const candidato = normalizar(campo.value);
+          if (!candidato.startsWith(escrito)) {
+            campo.value = escrito;
             return;
           }
           const nuevos = candidato.slice(escrito.length);
           for (const caracter of nuevos) procesarCaracter(caracter);
-          elementos.entrada.value = escrito;
-        });
+          campo.value = escrito;
+        }
+        elementos.entrada.addEventListener("input", () => recibirTexto(elementos.entrada));
+        elementos.entradaTranscripcion.addEventListener("input", () => recibirTexto(elementos.entradaTranscripcion));
+        for (const campo of [elementos.entrada, elementos.entradaTranscripcion]) {
+          campo.addEventListener("paste", evento => evento.preventDefault());
+          campo.addEventListener("keydown", evento => {
+            if (evento.key === "Backspace" || evento.key === "Delete") {
+              evento.preventDefault(); borrarCaracter(); return;
+            }
+            if (evento.key === "Enter") {
+              evento.preventDefault();
+              if (nivelActual === 6 && campo === elementos.entrada) procesarCaracter("\n");
+              else mostrarMensaje("SIGUE ESCRIBIENDO EL TEXTO");
+              campo.value = escrito;
+            }
+          });
+        }
 
         elementos.entrada.addEventListener("keydown", (evento) => {
           if (evento.key === "Escape") {
             evento.preventDefault();
             alternarPausa();
+            return;
           }
+          // ENTER y BORRAR se controlan en el manejador compartido.
         });
 
         document.addEventListener("keydown", (evento) => {
@@ -1501,11 +1839,15 @@
             alternarPausa();
             return;
           }
-          if (document.activeElement === elementos.entrada) return;
+          if (document.activeElement === elementos.entrada || document.activeElement === elementos.entradaTranscripcion) return;
           if (evento.target instanceof HTMLButtonElement) return;
-          if (evento.key === "Backspace") {
+          if (evento.key === "Backspace" || evento.key === "Delete") {
+            evento.preventDefault(); borrarCaracter(); return;
+          }
+          if (evento.key === "Enter") {
             evento.preventDefault();
-            borrarCaracter();
+            if (nivelActual === 6) procesarCaracter("\n");
+            elementos.entrada.value = escrito;
             return;
           }
           if (evento.key.length === 1) {
@@ -1525,6 +1867,128 @@
 
         document.addEventListener("visibilitychange", () => {
           if (document.hidden && estado === "JUGANDO" && !pausa && !bloqueado) alternarPausa();
+        });
+
+
+        const CATALOGO_BUSCADOR = {
+          GATO: { emoji:"🐈", descripcion:"EL GATO ES UN ANIMAL QUE TIENE BIGOTES, CUATRO PATAS Y UNA COLA. PUEDE VIVIR EN CASA." },
+          PERRO: { emoji:"🐕", descripcion:"EL PERRO ES UN ANIMAL QUE PUEDE VIVIR CON LAS PERSONAS. LE GUSTA JUGAR Y PASEAR." },
+          FLOR: { emoji:"🌻", descripcion:"LAS FLORES CRECEN EN MUCHAS PLANTAS. PUEDEN TENER DIFERENTES FORMAS Y COLORES." },
+          ARBOL: { emoji:"🌳", descripcion:"LOS ARBOLES TIENEN TRONCO, RAMAS Y HOJAS. MUCHOS NOS DAN SOMBRA." },
+          SOL: { emoji:"☀️", descripcion:"EL SOL ES UNA ESTRELLA QUE NOS DA LUZ Y CALOR DURANTE EL DIA." },
+          CASA: { emoji:"🏠", descripcion:"UNA CASA ES UN LUGAR DONDE LAS PERSONAS PUEDEN VIVIR Y DESCANSAR." },
+          LIBRO: { emoji:"📚", descripcion:"UN LIBRO TIENE PAGINAS Y PUEDE CONTAR UNA HISTORIA O ENSEÑARNOS ALGO." },
+          MANZANA: { emoji:"🍎", descripcion:"LA MANZANA ES UNA FRUTA QUE PUEDE SER ROJA, VERDE O AMARILLA." },
+          PELOTA: { emoji:"⚽", descripcion:"LA PELOTA SE USA PARA JUGAR Y PRACTICAR DIFERENTES DEPORTES." },
+          MARIPOSA: { emoji:"🦋", descripcion:"LA MARIPOSA ES UN INSECTO CON ALAS. MUCHAS VISITAN LAS FLORES." },
+          LUNA: { emoji:"🌙", descripcion:"LA LUNA ES UN SATELITE NATURAL DE LA TIERRA. PODEMOS VERLA EN EL CIELO." },
+          AGUA: { emoji:"💧", descripcion:"EL AGUA ES IMPORTANTE PARA LAS PERSONAS, LOS ANIMALES Y LAS PLANTAS." },
+          CARRO: { emoji:"🚗", descripcion:"UN CARRO ES UN VEHICULO QUE SIRVE PARA TRANSPORTAR PERSONAS." },
+          ROBOT: { emoji:"🤖", descripcion:"UN ROBOT ES UNA MAQUINA QUE PUEDE REALIZAR DIFERENTES TAREAS." },
+          ESCUELA: { emoji:"🏫", descripcion:"LA ESCUELA ES UN LUGAR PARA APRENDER, JUGAR Y COMPARTIR CON OTRAS PERSONAS." },
+          GALLINA: { emoji:"🐔", descripcion:"LA GALLINA ES UN AVE QUE TIENE PLUMAS, PICO Y DOS PATAS." },
+          LEON: { emoji:"🦁", descripcion:"EL LEON ES UN FELINO SALVAJE QUE VIVE EN GRUPOS." },
+          AVION: { emoji:"✈️", descripcion:"EL AVION ES UN VEHICULO QUE PUEDE VOLAR POR EL CIELO." },
+          BICICLETA: { emoji:"🚲", descripcion:"LA BICICLETA ES UN VEHICULO DE DOS RUEDAS QUE SE MUEVE AL PEDALEAR." },
+          COMPUTADOR: { emoji:"💻", descripcion:"UN COMPUTADOR NOS PERMITE ESCRIBIR, APRENDER Y BUSCAR INFORMACION." }
+        };
+        const SUGERENCIAS = ["GATO", "PERRO", "FLOR", "ARBOL", "SOL", "CASA", "LIBRO", "MANZANA", "PELOTA", "MARIPOSA", "LUNA", "ROBOT"];
+        let busquedasRealizadas = 0;
+        const terminosBuscados = new Set();
+        function normalizarBusqueda(texto) {
+          return (texto || "").trim().toUpperCase().normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "").replace(/[^A-ZÑ0-9 ]/g, " ").replace(/\s+/g, " ").trim();
+        }
+        function encontrarResultado(consulta) {
+          const limpio = normalizarBusqueda(consulta);
+          if (!limpio) return null;
+          const partes = limpio.split(" ");
+          for (let p of partes) {
+            if (CATALOGO_BUSCADOR[p]) return {clave:p, ...CATALOGO_BUSCADOR[p]};
+            if (p.endsWith("S") && CATALOGO_BUSCADOR[p.slice(0,-1)]) return {clave:p.slice(0,-1), ...CATALOGO_BUSCADOR[p.slice(0,-1)]};
+            if (p === "COMPUTADORA") return {clave:"COMPUTADOR", ...CATALOGO_BUSCADOR.COMPUTADOR};
+          }
+          return null;
+        }
+        function mostrarPantallaBusqueda() {
+          elementos.resultadoBusqueda.hidden = true;
+          elementos.ayudaBusqueda.textContent = "ESCRIBE UNA PALABRA Y PULSA ENTER O LA LUPA.";
+          elementos.campoBusqueda.value = "";
+          elementos.campoBusqueda.focus({preventScroll:true});
+        }
+        function iniciarBuscador() {
+          cancelAnimationFrame(cuadroAnimacion);
+          clearTimeout(temporizador);
+          window.speechSynthesis?.cancel();
+          detenerMusica(true);
+          estado = "BUSCADOR";
+          nivelActual = 9;
+          elementos.inicio.hidden = true;
+          elementos.juego.hidden = true;
+          elementos.final.hidden = true;
+          elementos.buscador.hidden = false;
+          busquedasRealizadas = 0;
+          terminosBuscados.clear();
+          elementos.progresoBusquedas.textContent = "BUSQUEDAS REALIZADAS: 0";
+          mostrarPantallaBusqueda();
+        }
+        function ejecutarBusqueda(evento) {
+          evento?.preventDefault();
+          const consulta = elementos.campoBusqueda.value.trim();
+          if (!consulta) {
+            elementos.ayudaBusqueda.textContent = "PRIMERO ESCRIBE UNA PALABRA.";
+            elementos.campoBusqueda.focus(); return;
+          }
+          const hallado = encontrarResultado(consulta);
+          elementos.resultadoBusqueda.hidden = false;
+          elementos.imagenResultado.replaceChildren();
+          if (hallado) {
+            const dibujo = document.createElement("div");
+            dibujo.className = "resultado-emoji";
+            dibujo.textContent = hallado.emoji;
+            elementos.imagenResultado.appendChild(dibujo);
+            elementos.imagenResultado.setAttribute("aria-label", "ILUSTRACION DE " + hallado.clave);
+            elementos.tituloResultado.textContent = hallado.clave;
+            elementos.descripcionResultado.textContent = hallado.descripcion;
+            elementos.ayudaBusqueda.textContent = "¡MUY BIEN! ENCONTRASTE UN RESULTADO PARA " + hallado.clave + ".";
+            if (!terminosBuscados.has(hallado.clave)) {
+              terminosBuscados.add(hallado.clave);
+              busquedasRealizadas += 1;
+            }
+            elementos.progresoBusquedas.textContent = "BUSQUEDAS DIFERENTES: " + busquedasRealizadas + (busquedasRealizadas >= 3 ? " · ¡RETO COMPLETADO! PUEDES SEGUIR BUSCANDO." : " · META: 3");
+            sonidoMeta();
+          } else {
+            const dibujo = document.createElement("div");
+            dibujo.className = "resultado-emoji";
+            dibujo.textContent = "🔎";
+            elementos.imagenResultado.appendChild(dibujo);
+            elementos.imagenResultado.setAttribute("aria-label", "LUPA SIN RESULTADOS");
+            elementos.tituloResultado.textContent = "NO HAY RESULTADOS";
+            elementos.descripcionResultado.textContent = "TODAVIA NO TENEMOS UNA IMAGEN PARA ESA PALABRA. INTENTA CON GATO, PERRO O SOL.";
+            elementos.ayudaBusqueda.textContent = "PRUEBA OTRA PALABRA. PUEDES ELEGIR UNA DE LA DERECHA.";
+          }
+          document.getElementById("volverBusqueda").focus({preventScroll:true});
+        }
+        const contenedorEjemplos = document.getElementById("palabrasEjemplo");
+        SUGERENCIAS.forEach(palabra => {
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.textContent = palabra;
+          boton.addEventListener("click", () => {
+            elementos.campoBusqueda.value = palabra;
+            elementos.campoBusqueda.focus({preventScroll:true});
+            elementos.ayudaBusqueda.textContent = "AHORA PULSA ENTER O LA LUPA PARA BUSCAR " + palabra + ".";
+          });
+          contenedorEjemplos.appendChild(boton);
+        });
+        elementos.formularioBusqueda.addEventListener("submit", ejecutarBusqueda);
+        document.getElementById("volverBusqueda").addEventListener("click", mostrarPantallaBusqueda);
+        document.getElementById("salirBuscador").addEventListener("click", volverInicio);
+        elementos.botonSalirTranscripcion.addEventListener("click", volverInicio);
+        elementos.botonEscucharTranscripcion.addEventListener("click", () => { escucharReto(); enfocarEntrada(); });
+        window.addEventListener("resize", () => {
+          if (nivelActual === 8 && estado === "JUGANDO") ajustarFuentesTranscripcion();
+          if (nivelActual === 7 && estado === "JUGANDO") ajustarFuenteParrafo();
         });
 
         registrarHerramientasDelJuego();
