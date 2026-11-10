@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#11162f" />
-    <meta name="description" content="JUEGO ACCESIBLE DE MECANOGRAFIA CON NUEVE NIVELES, TRANSCRIPCION Y UN BUSCADOR DE PRACTICA." />
+    <meta name="description" content="JUEGO ACCESIBLE DE MECANOGRAFIA CON DIEZ NIVELES, BUSCADOR DE PRACTICA Y CARNE ESCOLAR INTERACTIVO." />
     <title>TECLA POP</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2311162f'/%3E%3Crect x='11' y='16' width='42' height='32' rx='9' fill='%23f4e94b'/%3E%3Cpath d='M20 27h24M20 36h16' stroke='%2311162f' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
     <style>
@@ -874,6 +874,102 @@
           transition-duration: .01ms !important;
         }
       }
+
+      /* NIVEL 10: CARNÉ ESCOLAR. Los datos permanecen en esta sesión. */
+      .nivel-10 { --color: var(--naranja); }
+      body.modo-carne .aplicacion { width: min(1440px, 100%); }
+      .carne-nivel { display: grid; gap: 20px; }
+      .carne-cabecera, .carne-encabezado-panel, .carne-acciones, .carne-progreso-fila {
+        display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      }
+      .carne-cabecera h2 { margin: 10px 0 8px; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1; }
+      .carne-cabecera p { margin: 0; color: var(--suave); font-weight: 700; line-height: 1.5; max-width: 720px; }
+      .carne-insignia { color: var(--naranja); font-weight: 900; font-size: .8rem; letter-spacing: .07em; }
+      .carne-cabecera .boton-control { flex: 0 0 auto; }
+      .carne-orientacion { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 14px 18px; border-radius: 16px; background: var(--panel); color: var(--suave); font-weight: 800; font-size: .88rem; }
+      .carne-orientacion kbd { display: inline-block; margin-right: 5px; padding: 3px 7px; border: 1px solid #65719e; border-bottom-width: 3px; border-radius: 5px; color: white; font: inherit; font-size: .8rem; }
+      .carne-columnas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; position: relative; }
+      .carne-columnas::before { content: ''; position: absolute; left: 50%; top: 12px; bottom: 12px; border-left: 2px dashed #46527e; }
+      .carne-panel { min-width: 0; padding: clamp(14px, 1.7vw, 24px); border: 2px solid #3c496a; border-radius: 24px; background: #131a34; }
+      .carne-panel-ejemplo { border-color: #438f96; }
+      .carne-panel-propio { border-color: var(--amarillo); }
+      .carne-encabezado-panel { justify-content: flex-start; margin-bottom: 16px; }
+      .carne-paso { display: grid; place-items: center; flex: 0 0 38px; height: 38px; border-radius: 12px; color: var(--fondo); background: var(--cian); font-weight: 1000; }
+      .carne-panel-propio .carne-paso { background: var(--amarillo); }
+      .carne-encabezado-panel h3 { margin: 0 0 4px; font-size: 1rem; }
+      .carne-encabezado-panel p { margin: 0; color: var(--suave); font-weight: 700; font-size: .8rem; line-height: 1.4; }
+      .carne-tarjeta { overflow: hidden; border: 2px solid #fbd3a3; border-radius: 18px; color: #382117; background: radial-gradient(ellipse at 90% 100%, #ffd5a6, transparent 65%), linear-gradient(135deg, #fff0d4, #ffc995 65%, #ffb891); font-family: var(--fuente-teclado); box-shadow: 0 10px 26px #0003; }
+      .carne-franja { display: flex; align-items: center; gap: 14px; min-height: 85px; padding: 15px 18px; background: linear-gradient(110deg, #f49564, #ffc28a 70%, #ffe0ad); border-bottom: 1px solid #ab5e3477; }
+      .carne-monograma { display: grid; place-items: center; flex: 0 0 49px; height: 49px; border: 2px solid #52321f; border-radius: 12px; font-size: 1.2rem; font-weight: 900; letter-spacing: -.04em; }
+      .carne-franja strong { display: block; font-size: clamp(.8rem, 1.15vw, 1rem); line-height: 1.25; letter-spacing: .04em; }
+      .carne-franja span { display: block; margin-top: 5px; font-size: .66rem; font-weight: 700; letter-spacing: .1em; }
+      .carne-cuerpo { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 13px 16px; padding: 18px; }
+      .carne-foto { display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: start; height: 178px; margin: 4px 0 0; border: 2px solid #ae714a; border-radius: 10px; background: #fff5e8c9; }
+      .carne-foto svg { width: 68px; height: 88px; color: #b57d59; }
+      .carne-foto figcaption { color: #77513a; font-size: .65rem; font-weight: 800; text-align: center; line-height: 1.4; }
+      .carne-principales { display: grid; gap: 9px; min-width: 0; }
+      .carne-campo { min-width: 0; border-radius: 10px; outline: 3px solid transparent; outline-offset: 3px; transition: outline-color .15s ease; }
+      .carne-campo-ancho { grid-column: 1 / -1; }
+      .carne-campo label, .carne-etiqueta { display: block; margin: 0 0 5px; font-size: .68rem; font-weight: 800; letter-spacing: .06em; }
+      .carne-valor, .carne-input { width: 100%; min-height: 43px; padding: 9px 10px; margin: 0; border: 2px solid #b77c5166; border-radius: 8px; background: #fff9efc9; color: #352119; font-family: var(--fuente-teclado); font-size: clamp(.92rem, 1.4vw, 1.22rem); font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+      .carne-valor { display: flex; align-items: center; }
+      .carne-input { display: block; border-color: #91633f; outline: none; text-transform: uppercase; }
+      .carne-input::placeholder { color: #795c45; opacity: 1; font-size: .8rem; font-weight: 700; }
+      .carne-input:focus { border-color: #182955; box-shadow: 0 0 0 3px #f4e94b; background: #fffef9; }
+      .carne-campo-en-foco { outline-color: #b8791f; }
+      .carne-panel-propio .carne-campo-en-foco { outline-color: transparent; }
+      .carne-input[aria-invalid=true] { border-color: #a12335; background: #fff1f1; }
+      .carne-error { display: block; margin-top: 5px; color: #981d30; font-size: .73rem; font-weight: 800; line-height: 1.3; }
+      .carne-pie-tarjeta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 10px; padding: 11px 18px; border-top: 1px solid #b3734988; background: #f8b87d80; font-size: .64rem; font-weight: 900; letter-spacing: .07em; }
+      .carne-pista { min-height: 43px; margin: 14px 0 0; color: var(--suave); font-size: .8rem; font-weight: 700; line-height: 1.5; }
+      .carne-pista strong { color: var(--amarillo); }
+      .carne-progreso { margin-top: 14px; }
+      .carne-progreso-fila { color: var(--suave); font-weight: 900; font-size: .78rem; }
+      .carne-progreso progress { display: block; width: 100%; height: 9px; margin-top: 8px; accent-color: var(--verde); border: none; border-radius: 10px; overflow: hidden; }
+      .carne-progreso progress::-webkit-progress-bar { background: #090d20; }
+      .carne-progreso progress::-webkit-progress-value { background: var(--verde); border-radius: 10px; }
+      .carne-acciones { margin-top: 18px; flex-wrap: wrap; }
+      .carne-revisar { flex: 1; min-height: 48px; padding: 11px 18px; border: 0; border-bottom: 4px solid #b8aa18; border-radius: 12px; background: var(--amarillo); color: #11162f; cursor: pointer; font: inherit; font-size: .9rem; font-weight: 1000; }
+      .carne-reiniciar { min-height: 48px; padding: 10px 14px; border: 2px solid #66739e; border-radius: 12px; background: transparent; color: white; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 800; }
+      .carne-revisar:focus-visible, .carne-reiniciar:focus-visible, .carne-teclado button:focus-visible { outline: 3px solid var(--cian); outline-offset: 4px; }
+      .carne-estado { margin: 14px 0 0; min-height: 22px; color: var(--suave); font-size: .84rem; font-weight: 800; line-height: 1.5; }
+      .carne-estado.carne-incompleto { color: #ffb7ce; }
+      .carne-logro { margin-top: 14px; padding: 16px; border: 2px solid var(--verde); border-radius: 14px; background: #79ed9f14; }
+      .carne-logro h4 { margin: 0 0 6px; color: var(--verde); font-size: 1.1rem; }
+      .carne-logro p { margin: 0; color: #e6ffeb; font-weight: 700; line-height: 1.5; font-size: .85rem; }
+      .carne-ayuda { padding: 16px 20px; border: 2px solid #3c496a; border-radius: 20px; background: #151b38; }
+      .carne-ayuda summary { cursor: pointer; color: var(--suave); font-size: .8rem; font-weight: 900; letter-spacing: .04em; }
+      .carne-ayuda summary span { color: var(--amarillo); }
+      .carne-teclado { display: grid; gap: 6px; max-width: 780px; margin: 16px auto 0; }
+      .carne-fila-teclas { display: flex; justify-content: center; gap: 6px; }
+      .carne-teclado button { flex: 1; min-width: 0; min-height: 35px; padding: 5px 2px; border: 1px solid #65739e; border-bottom: 3px solid #070c20; border-radius: 7px; color: white; background: #283359; font: 800 .87rem var(--fuente-teclado); cursor: pointer; }
+      .carne-teclado button.carne-tecla-activa { background: var(--amarillo); color: #11162f; border-color: var(--amarillo); }
+      .carne-teclado button[data-carne-tecla=ESPACIO] { flex: 2.5; }
+      .carne-teclado button[data-carne-tecla=ENTER], .carne-teclado button[data-carne-tecla=TAB] { background: #f4e94b; color: #11162f; border-color: #b7a92b; }
+      .carne-nota { margin: 0; color: var(--suave); text-align: center; font-size: .76rem; line-height: 1.5; font-weight: 700; }
+      @media (max-width: 900px) {
+        .carne-columnas { grid-template-columns: 1fr; gap: 20px; }
+        .carne-columnas::before { display: none; }
+        .carne-cabecera { align-items: flex-start; flex-wrap: wrap; }
+        .carne-panel { max-width: 660px; width: 100%; margin-inline: auto; }
+        .carne-franja strong { font-size: 1rem; }
+        .carne-valor, .carne-input { font-size: 1.1rem; }
+      }
+      @media (max-width: 480px) {
+        body.modo-carne .aplicacion { padding: 14px; }
+        .carne-panel { padding: 12px; border-radius: 18px; }
+        .carne-cuerpo { grid-template-columns: 66px minmax(0, 1fr); gap: 12px 10px; padding: 13px; }
+        .carne-foto { height: 166px; }
+        .carne-foto svg { width: 48px; height: 70px; }
+        .carne-franja { padding: 12px; gap: 10px; }
+        .carne-franja strong { font-size: .85rem; }
+        .carne-valor, .carne-input { font-size: 1rem; }
+        .carne-teclado { gap: 5px; }
+        .carne-fila-teclas { gap: 3px; }
+        .carne-teclado button { font-size: .73rem; min-height: 35px; }
+        .carne-ayuda { padding: 14px 10px; }
+      }
+
     </style>
   </head>
   <body>
@@ -892,7 +988,7 @@
       <section class="inicio" id="inicio" aria-labelledby="titulo-principal">
         <div class="titulo-bloque">
           <h1 id="titulo-principal">ELIGE TU NIVEL</h1>
-          <p class="entrada">ESCRIBE UN RETO A LA VEZ. CADA NIVEL DURA CERCA DE CUATRO MINUTOS.</p>
+          <p class="entrada">ESCRIBE UN RETO A LA VEZ. AHORA TAMBIÉN PUEDES CREAR TU CARNÉ ESCOLAR.</p>
         </div>
 
         <div class="niveles" aria-label="NIVELES DEL JUEGO">
@@ -941,6 +1037,7 @@
             <strong>BUSCAPOP</strong>
             <span>APRENDE A BUSCAR EN INTERNET</span>
           </button>
+          <button class="nivel nivel-10" type="button" data-nivel="10"><span class="nivel-numero">10</span><strong>MI CARNÉ ESCOLAR</strong><span>USA TUS DATOS PARA COMPLETAR TU CARNÉ</span></button>
         </div>
 
         <div class="pie-inicio"><span class="pulso"></span> TODO ESTA LISTO</div>
@@ -1066,6 +1163,35 @@
           </aside>
         </div>
       </section>
+
+      <section class="carne-nivel" id="carne" aria-labelledby="tituloCarne" hidden>
+        <div class="carne-cabecera">
+          <div><span class="carne-insignia">NIVEL 10 · ESCRIBO PARA LA VIDA</span><h2 id="tituloCarne">MI CARNÉ ESCOLAR</h2><p>MIRA EL EJEMPLO DE LA IZQUIERDA Y COMPLETA EL CARNÉ DE LA DERECHA CON TUS PROPIOS DATOS.</p></div>
+          <button class="boton-control" id="salirCarne" type="button">← ELEGIR NIVELES</button>
+        </div>
+        <div class="carne-orientacion"><span><kbd>TAB</kbd> O <kbd>ENTER ↵</kbd> SIGUIENTE CAMPO</span><span><kbd>⌫</kbd> BORRAR Y CORREGIR</span><span>A TU RITMO · SIN RELOJ</span></div>
+        <div class="carne-columnas">
+          <section class="carne-panel carne-panel-ejemplo" aria-labelledby="tituloEjemploCarne">
+            <div class="carne-encabezado-panel"><span class="carne-paso" aria-hidden="true">1</span><div><h3 id="tituloEjemploCarne">MIRA EL EJEMPLO</h3><p>ESTOS DATOS SON FICTICIOS.</p></div></div>
+<div class="carne-tarjeta"><header class="carne-franja"><div class="carne-monograma" aria-hidden="true">IPN</div><div><strong>CARNÉ ESTUDIANTIL</strong><span>INSTITUTO PEDAGÓGICO NACIONAL</span></div></header><div class="carne-cuerpo"><figure class="carne-foto"><svg viewBox="0 0 80 100" aria-hidden="true"><circle cx="40" cy="28" r="19" fill="currentColor"/><path d="M7 96V80C7 55 73 55 73 80V96Z" fill="currentColor"/></svg><figcaption>ESPACIO<br>PARA FOTO</figcaption></figure><div class="carne-principales"><div class="carne-campo" data-carne-campo="nombres"><span class="carne-etiqueta">NOMBRES</span><p class="carne-valor">SOFÍA</p></div><div class="carne-campo" data-carne-campo="apellidos"><span class="carne-etiqueta">APELLIDOS</span><p class="carne-valor">GÓMEZ RUIZ</p></div><div class="carne-campo" data-carne-campo="curso"><span class="carne-etiqueta">CURSO O NIVEL</span><p class="carne-valor">NIVEL 4</p></div></div><div class="carne-campo carne-campo-ancho" data-carne-campo="colegio"><span class="carne-etiqueta">COLEGIO</span><p class="carne-valor">INSTITUTO PEDAGÓGICO NACIONAL</p></div><div class="carne-campo carne-campo-ancho" data-carne-campo="codigo"><span class="carne-etiqueta">CÓDIGO ESCOLAR</span><p class="carne-valor">0042</p></div></div><footer class="carne-pie-tarjeta"><span>BOGOTÁ · COLOMBIA</span><span>PRÁCTICA DE MECANOGRAFÍA</span></footer></div>
+            <p class="carne-pista">EL EJEMPLO TE MUESTRA DÓNDE VA CADA DATO.<br><strong>EN TU CARNÉ ESCRIBE TUS DATOS.</strong></p>
+          </section>
+          <section class="carne-panel carne-panel-propio" aria-labelledby="tituloPropioCarne">
+            <div class="carne-encabezado-panel"><span class="carne-paso" aria-hidden="true">2</span><div><h3 id="tituloPropioCarne">COMPLETA TU CARNÉ</h3><p>TOCA UN CAMPO Y COMIENZA A ESCRIBIR.</p></div></div>
+            <form id="formCarne" autocomplete="off" novalidate>
+<div class="carne-tarjeta"><header class="carne-franja"><div class="carne-monograma" aria-hidden="true">IPN</div><div><strong>CARNÉ ESTUDIANTIL</strong><span>INSTITUTO PEDAGÓGICO NACIONAL</span></div></header><div class="carne-cuerpo"><figure class="carne-foto"><svg viewBox="0 0 80 100" aria-hidden="true"><circle cx="40" cy="28" r="19" fill="currentColor"/><path d="M7 96V80C7 55 73 55 73 80V96Z" fill="currentColor"/></svg><figcaption>ESPACIO<br>PARA FOTO</figcaption></figure><div class="carne-principales"><div class="carne-campo" data-carne-campo="nombres"><label for="carne-nombres">NOMBRES</label><input class="carne-input" id="carne-nombres" data-carne-id="nombres" type="text" maxlength="70" placeholder="TUS NOMBRES" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-describedby="carne-error-nombres" required><span class="carne-error" id="carne-error-nombres" hidden></span></div><div class="carne-campo" data-carne-campo="apellidos"><label for="carne-apellidos">APELLIDOS</label><input class="carne-input" id="carne-apellidos" data-carne-id="apellidos" type="text" maxlength="80" placeholder="TUS APELLIDOS" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-describedby="carne-error-apellidos" required><span class="carne-error" id="carne-error-apellidos" hidden></span></div><div class="carne-campo" data-carne-campo="curso"><label for="carne-curso">CURSO O NIVEL</label><input class="carne-input" id="carne-curso" data-carne-id="curso" type="text" maxlength="35" placeholder="TU CURSO O NIVEL" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-describedby="carne-error-curso" required><span class="carne-error" id="carne-error-curso" hidden></span></div></div><div class="carne-campo carne-campo-ancho" data-carne-campo="colegio"><label for="carne-colegio">COLEGIO</label><input class="carne-input" id="carne-colegio" data-carne-id="colegio" type="text" maxlength="100" placeholder="ESCRIBE TU COLEGIO" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" aria-describedby="carne-error-colegio" required><span class="carne-error" id="carne-error-colegio" hidden></span></div><div class="carne-campo carne-campo-ancho" data-carne-campo="codigo"><label for="carne-codigo">CÓDIGO ESCOLAR</label><input class="carne-input" id="carne-codigo" data-carne-id="codigo" type="text" maxlength="30" placeholder="TU CÓDIGO O UNO DE PRÁCTICA" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="done" aria-describedby="carne-error-codigo" required><span class="carne-error" id="carne-error-codigo" hidden></span></div></div><footer class="carne-pie-tarjeta"><span>BOGOTÁ · COLOMBIA</span><span>PRÁCTICA DE MECANOGRAFÍA</span></footer></div>
+              <p class="carne-pista" id="carnePistaCampo">EMPIEZA POR TUS NOMBRES.</p>
+              <div class="carne-progreso"><div class="carne-progreso-fila"><span>TU AVANCE</span><span id="carneTextoAvance" aria-live="polite">0 DE 5 CAMPOS</span></div><progress id="carneAvance" max="5" value="0" aria-label="CAMPOS COMPLETADOS">0 DE 5</progress></div>
+              <div class="carne-acciones"><button class="carne-revisar" type="submit">REVISAR MI CARNÉ ✓</button><button class="carne-reiniciar" id="reiniciarCarne" type="button">EMPEZAR DE NUEVO</button></div>
+              <p class="carne-estado" id="carneEstado" role="status" aria-live="polite">COMPLETA LOS 5 CAMPOS. SI NO SABES TU CÓDIGO, USA UNO DE PRÁCTICA.</p>
+              <div class="carne-logro" id="carneLogro" hidden><h4 id="carneLogroTitulo" tabindex="-1">¡LO LOGRASTE! TU CARNÉ ESTÁ COMPLETO.</h4><p>LEE TUS DATOS UNA VEZ MÁS Y MUÉSTRALOS A TU DOCENTE. PUEDES CORREGIRLOS O PRACTICAR DE NUEVO.</p></div>
+            </form>
+          </section>
+        </div>
+        <details class="carne-ayuda" open><summary>APOYO DEL TECLADO · <span id="carneCampoActivo">NOMBRES</span></summary><div class="carne-teclado" id="tecladoCarne" role="group" aria-label="TECLADO DE APOYO PARA EL CARNÉ"></div></details>
+        <p class="carne-nota">ACTIVIDAD EDUCATIVA. LOS DATOS SE BORRAN AL SALIR DEL NIVEL O RECARGAR LA PÁGINA.</p>
+      </section>
+
     </main>
 
     <section class="final" id="final" role="dialog" aria-modal="true" aria-labelledby="tituloFinal" hidden>
@@ -1235,7 +1361,7 @@
 
         const $ = (selector) => document.querySelector(selector);
         const elementos = {
-          inicio: $("#inicio"), juego: $("#juego"), final: $("#final"),
+          carne: $("#carne"), inicio: $("#inicio"), juego: $("#juego"), final: $("#final"),
           nombreNivel: $("#nombreNivel"), textoAvance: $("#textoAvance"), barraAvance: $("#barraAvance"),
           puntos: $("#puntos"), ronda: $("#rondaFlotante"), objetivo: $("#objetivo"),
           correcta: $("#parteCorrecta"), pendiente: $("#partePendiente"), zona: $("#zonaCaida"),
@@ -1505,6 +1631,10 @@
         }
 
         function iniciarNivel(numeroNivel) {
+          elementos.carne.hidden = true;
+          document.body.classList.remove("modo-carne");
+          if (Number(numeroNivel) !== 10) limpiarCarne();
+          if (Number(numeroNivel) === 10) { iniciarCarne(); return; }
           if (Number(numeroNivel) === 9) { iniciarBuscador(); return; }
           cancelAnimationFrame(cuadroAnimacion);
           clearTimeout(temporizador);
@@ -1537,6 +1667,10 @@
         }
 
         function volverInicio() {
+          const regresarAlCarne = estado === "CARNE";
+          elementos.carne.hidden = true;
+          document.body.classList.remove("modo-carne");
+          limpiarCarne();
           cancelAnimationFrame(cuadroAnimacion);
           clearTimeout(temporizador);
           window.speechSynthesis?.cancel();
@@ -1547,7 +1681,7 @@
           elementos.buscador.hidden = true;
           elementos.juego.hidden = true;
           elementos.final.hidden = true;
-          document.querySelector(".nivel")?.focus();
+          document.querySelector(regresarAlCarne ? '[data-nivel="10"]' : ".nivel")?.focus();
         }
 
         function animar(tiempo) {
@@ -1782,6 +1916,7 @@
         }
 
         function enfocarEntrada() {
+          if (estado === "CARNE") { campoCarneActivo.focus({ preventScroll: true }); return; }
           if (estado === "JUGANDO" && !pausa) (nivelActual === 8 ? elementos.entradaTranscripcion : elementos.entrada).focus({ preventScroll: true });
         }
 
@@ -1792,11 +1927,11 @@
             void Promise.resolve(contexto.registerTool({
               name: "iniciar_nivel_tecla_pop",
               title: "INICIAR NIVEL",
-              description: "INICIA UNO DE LOS NUEVE NIVELES Y ACTUALIZA EL JUEGO VISIBLE.",
+              description: "INICIA UNO DE LOS DIEZ NIVELES Y ACTUALIZA EL JUEGO VISIBLE.",
               inputSchema: {
                 type: "object",
                 properties: {
-                  nivel: { type: "integer", minimum: 1, maximum: 9 }
+                  nivel: { type: "integer", minimum: 1, maximum: 10 }
                 },
                 required: ["nivel"],
                 additionalProperties: false
@@ -1804,9 +1939,9 @@
               annotations: { readOnlyHint: false, untrustedContentHint: false },
               execute(entrada) {
                 const numero = Number(entrada?.nivel);
-                if (!Number.isInteger(numero) || numero < 1 || numero > 9) throw new Error("EL NIVEL DEBE ESTAR ENTRE 1 Y 9.");
+                if (!Number.isInteger(numero) || numero < 1 || numero > 10) throw new Error("EL NIVEL DEBE ESTAR ENTRE 1 Y 10.");
                 iniciarNivel(numero);
-                return { nivel: numero, nombre: numero === 9 ? "BUSCAPOP" : NIVELES[numero].nombre, estado: "INICIADO", retos: numero === 9 ? "LIBRE" : totalRetos() };
+                return { nivel: numero, nombre: numero === 10 ? "MI CARNÉ ESCOLAR" : numero === 9 ? "BUSCAPOP" : NIVELES[numero].nombre, estado: "INICIADO", retos: numero === 10 ? 5 : numero === 9 ? "LIBRE" : totalRetos() };
               }
             })).catch(() => {});
           } catch (_) {}
@@ -2012,7 +2147,210 @@
           if (nivelActual === 7 && estado === "JUGANDO") ajustarFuenteParrafo();
         });
 
+
+        // El carné usa campos de texto normales: admite correcciones y datos propios.
+        const formularioCarne = document.getElementById("formCarne");
+        const camposCarne = [...formularioCarne.querySelectorAll(".carne-input")];
+        const tecladoCarne = document.getElementById("tecladoCarne");
+        const estadoCarne = document.getElementById("carneEstado");
+        const logroCarne = document.getElementById("carneLogro");
+        const pistasCarne = {
+          nombres: "ESCRIBE TUS NOMBRES. USA ESPACIO SI TIENES MÁS DE UNO.",
+          apellidos: "ESCRIBE TUS APELLIDOS. PUEDES BORRAR PARA CORREGIR.",
+          curso: "ESCRIBE TU CURSO O NIVEL. POR EJEMPLO: NIVEL 4.",
+          colegio: "ESCRIBE EL NOMBRE DE TU COLEGIO: INSTITUTO PEDAGÓGICO NACIONAL.",
+          codigo: "ESCRIBE TU CÓDIGO ESCOLAR. SI NO LO SABES, INVENTA UNO DE PRÁCTICA."
+        };
+        let campoCarneActivo = camposCarne[0];
+        let revisionCarne = false;
+        let carnéEnComposicion = false;
+        let temporizadorCarne = 0;
+
+        function validarCampoCarne(campo) {
+          const valor = campo.value.trim();
+          if (!valor) return "ESCRIBE ESTE DATO.";
+          if (campo.dataset.carneId === "nombres" || campo.dataset.carneId === "apellidos") {
+            if (!/^[\p{L}\p{M} .’'\-]+$/u.test(valor) || !/\p{L}/u.test(valor)) return "USA LETRAS PARA ESCRIBIR ESTE DATO.";
+          } else if (!/[\p{L}\p{N}]/u.test(valor)) {
+            return "ESCRIBE LETRAS O NÚMEROS.";
+          }
+          return "";
+        }
+
+        function mostrarErrorCarne(campo) {
+          const mensaje = validarCampoCarne(campo);
+          const ayuda = document.getElementById("carne-error-" + campo.dataset.carneId);
+          ayuda.textContent = mensaje;
+          ayuda.hidden = !mensaje;
+          if (mensaje) campo.setAttribute("aria-invalid", "true");
+          else campo.removeAttribute("aria-invalid");
+          return !mensaje;
+        }
+
+        function actualizarAvanceCarne() {
+          const cantidad = camposCarne.filter(campo => !validarCampoCarne(campo)).length;
+          const texto = cantidad + " DE 5 CAMPOS";
+          const avance = document.getElementById("carneTextoAvance");
+          if (avance.textContent !== texto) avance.textContent = texto;
+          document.getElementById("carneAvance").value = cantidad;
+        }
+
+        function seleccionarCampoCarne(campo, enfocar = false) {
+          campoCarneActivo = campo;
+          const clave = campo.dataset.carneId;
+          elementos.carne.querySelectorAll("[data-carne-campo]").forEach(caja => {
+            caja.classList.toggle("carne-campo-en-foco", caja.dataset.carneCampo === clave);
+          });
+          document.getElementById("carnePistaCampo").textContent = pistasCarne[clave];
+          document.getElementById("carneCampoActivo").textContent = campo.labels[0].textContent;
+          if (enfocar) campo.focus({ preventScroll: true });
+        }
+
+        function actualizarCampoCarne(campo) {
+          if (carnéEnComposicion) return;
+          const inicio = campo.selectionStart ?? campo.value.length;
+          const fin = campo.selectionEnd ?? inicio;
+          const original = campo.value;
+          const nuevo = original.toLocaleUpperCase("es-CO");
+          if (nuevo !== original) {
+            campo.value = nuevo;
+            campo.setSelectionRange(original.slice(0, inicio).toLocaleUpperCase("es-CO").length, original.slice(0, fin).toLocaleUpperCase("es-CO").length);
+          }
+          logroCarne.hidden = true;
+          estadoCarne.classList.remove("carne-incompleto");
+          if (revisionCarne || campo.hasAttribute("aria-invalid")) mostrarErrorCarne(campo);
+          estadoCarne.textContent = "LEE LO QUE ESCRIBISTE Y CONTINÚA CON EL SIGUIENTE CAMPO.";
+          actualizarAvanceCarne();
+        }
+
+        function limpiarCarne() {
+          formularioCarne.reset();
+          revisionCarne = false;
+          carnéEnComposicion = false;
+          logroCarne.hidden = true;
+          camposCarne.forEach(campo => {
+            campo.removeAttribute("aria-invalid");
+            const ayuda = document.getElementById("carne-error-" + campo.dataset.carneId);
+            ayuda.hidden = true;
+            ayuda.textContent = "";
+          });
+          estadoCarne.className = "carne-estado";
+          estadoCarne.textContent = "COMPLETA LOS 5 CAMPOS. SI NO SABES TU CÓDIGO, USA UNO DE PRÁCTICA.";
+          actualizarAvanceCarne();
+          seleccionarCampoCarne(camposCarne[0]);
+        }
+
+        function iniciarCarne() {
+          cancelAnimationFrame(cuadroAnimacion);
+          clearTimeout(temporizador);
+          window.speechSynthesis?.cancel();
+          detenerMusica(true);
+          estado = "CARNE";
+          nivelActual = 10;
+          elementos.inicio.hidden = true;
+          elementos.juego.hidden = true;
+          elementos.buscador.hidden = true;
+          elementos.final.hidden = true;
+          elementos.carne.hidden = false;
+          document.body.classList.add("modo-carne");
+          limpiarCarne();
+          seleccionarCampoCarne(camposCarne[0], true);
+        }
+
+        function revisarCarne(evento) {
+          evento?.preventDefault();
+          revisionCarne = true;
+          camposCarne.forEach(campo => { campo.value = campo.value.trim().replace(/\s+/g, " "); mostrarErrorCarne(campo); });
+          actualizarAvanceCarne();
+          const primero = camposCarne.find(campo => validarCampoCarne(campo));
+          if (primero) {
+            logroCarne.hidden = true;
+            estadoCarne.classList.add("carne-incompleto");
+            estadoCarne.textContent = "FALTA REVISAR UN DATO. MIRA EL CAMPO MARCADO Y VUELVE A INTENTARLO.";
+            seleccionarCampoCarne(primero, true);
+            primero.scrollIntoView({ block: "nearest", behavior: "auto" });
+            return;
+          }
+          estadoCarne.classList.remove("carne-incompleto");
+          estadoCarne.textContent = "LOS 5 CAMPOS ESTÁN COMPLETOS. REVISA CON TU DOCENTE QUE LOS DATOS ESTÉN BIEN ESCRITOS.";
+          logroCarne.hidden = false;
+          sonidoMeta();
+          document.getElementById("carneLogroTitulo").focus({ preventScroll: true });
+          logroCarne.scrollIntoView({ block: "nearest", behavior: "auto" });
+        }
+
+        function siguienteCampoCarne() {
+          mostrarErrorCarne(campoCarneActivo);
+          const siguiente = camposCarne[camposCarne.indexOf(campoCarneActivo) + 1];
+          if (siguiente) {
+            seleccionarCampoCarne(siguiente, true);
+            siguiente.scrollIntoView({ block: "nearest", behavior: "auto" });
+          } else revisarCarne();
+        }
+
+        function pulsarTeclaCarne(tecla) {
+          if (estado !== "CARNE") return;
+          const campo = campoCarneActivo;
+          campo.focus({ preventScroll: true });
+          if (tecla === "TAB" || tecla === "ENTER") { siguienteCampoCarne(); return; }
+          let inicio = campo.selectionStart ?? campo.value.length;
+          const fin = campo.selectionEnd ?? inicio;
+          let texto = tecla === "ESPACIO" ? " " : tecla;
+          if (tecla === "BORRAR") {
+            texto = "";
+            if (inicio === fin && inicio > 0) inicio -= 1;
+          }
+          if (campo.value.length - (fin - inicio) + texto.length > campo.maxLength) return;
+          campo.setRangeText(texto, inicio, fin, "end");
+          actualizarCampoCarne(campo);
+        }
+
+        function iluminarTeclaCarne(tecla) {
+          let clave = tecla.toLocaleUpperCase("es-CO");
+          if (tecla === " ") clave = "ESPACIO";
+          if (tecla === "Backspace" || tecla === "Delete") clave = "BORRAR";
+          clearTimeout(temporizadorCarne);
+          tecladoCarne.querySelectorAll("button").forEach(boton => boton.classList.toggle("carne-tecla-activa", boton.dataset.carneTecla === clave));
+          temporizadorCarne = setTimeout(() => tecladoCarne.querySelectorAll(".carne-tecla-activa").forEach(boton => boton.classList.remove("carne-tecla-activa")), 180);
+        }
+
+        for (const fila of ["1234567890".split(""), ...FILAS.letras, ["Á", "É", "Í", "Ó", "Ú", "Ü"], ["BORRAR", "ESPACIO", "TAB", "ENTER"]]) {
+          const grupo = document.createElement("div");
+          grupo.className = "carne-fila-teclas";
+          for (const tecla of fila) {
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.dataset.carneTecla = tecla;
+            boton.textContent = tecla === "BORRAR" ? "⌫ BORRAR" : tecla === "ENTER" ? "ENTER ↵" : tecla;
+            boton.setAttribute("aria-label", "TECLA " + (tecla === "TAB" ? "TAB, SIGUIENTE CAMPO" : tecla));
+            boton.addEventListener("pointerdown", evento => evento.preventDefault());
+            boton.addEventListener("click", () => { pulsarTeclaCarne(tecla); iluminarTeclaCarne(tecla); });
+            grupo.appendChild(boton);
+          }
+          tecladoCarne.appendChild(grupo);
+        }
+
+        camposCarne.forEach(campo => {
+          campo.addEventListener("focus", () => seleccionarCampoCarne(campo));
+          campo.addEventListener("input", () => actualizarCampoCarne(campo));
+          campo.addEventListener("compositionstart", () => { carnéEnComposicion = true; });
+          campo.addEventListener("compositionend", () => { carnéEnComposicion = false; actualizarCampoCarne(campo); });
+          campo.addEventListener("blur", () => { if (campo.value.trim() || revisionCarne) mostrarErrorCarne(campo); });
+          campo.addEventListener("keydown", evento => {
+            if (evento.isComposing) return;
+            iluminarTeclaCarne(evento.key);
+            if (evento.key === "Enter") { evento.preventDefault(); siguienteCampoCarne(); }
+          });
+        });
+        formularioCarne.addEventListener("submit", revisarCarne);
+        document.getElementById("salirCarne").addEventListener("click", volverInicio);
+        document.getElementById("reiniciarCarne").addEventListener("click", () => { limpiarCarne(); seleccionarCampoCarne(camposCarne[0], true); });
+        // Evita que el navegador restaure datos de una sesión previa del aula.
+        window.addEventListener("pageshow", () => { if (estado === "CARNE") limpiarCarne(); });
+        limpiarCarne();
+
         registrarHerramientasDelJuego();
+        if (new URLSearchParams(location.search).get("nivel") === "10") iniciarNivel(10);
       })();
     </script>
   </body>
